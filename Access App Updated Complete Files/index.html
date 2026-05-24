@@ -1,0 +1,476 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Access App</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="brand-panel" aria-label="Application welcome">
+        <div class="brand-mark">A</div>
+        <div>
+          <p class="eyebrow">Secure Access</p>
+          <h1>Welcome to the app</h1>
+        </div>
+      </section>
+
+      <section class="flow-panel">
+        <div class="top-controls">
+          <button class="secondary-button top-install-button" id="install-app-top" type="button" data-install-app>
+            Install app
+          </button>
+          <div class="theme-control" aria-label="Background mode">
+            <button class="theme-option is-active" type="button" data-theme-option="light">Light</button>
+            <button class="theme-option" type="button" data-theme-option="dark">Night</button>
+          </div>
+        </div>
+        <p class="top-install-status" id="top-install-status" aria-live="polite"></p>
+
+        <div class="screen is-active" id="credentials-screen">
+          <form class="form-card" id="credentials-form" novalidate>
+            <div class="form-heading">
+              <p class="step-label">Step 1</p>
+              <h2>Enter your login details</h2>
+            </div>
+
+            <label class="field">
+              <span>Username</span>
+              <input id="username" name="username" type="text" autocomplete="username" required />
+            </label>
+
+            <label class="field">
+              <span>Email ID</span>
+              <input id="email" name="email" type="email" autocomplete="email" required />
+            </label>
+
+            <label class="field">
+              <span>Password</span>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="new-password"
+                minlength="6"
+                required
+              />
+            </label>
+
+            <p class="form-error" data-error-for="credentials" aria-live="polite"></p>
+
+            <button class="primary-button" type="submit">Next</button>
+          </form>
+        </div>
+
+        <div class="screen" id="profile-screen">
+          <form class="form-card" id="profile-form" novalidate>
+            <div class="form-heading">
+              <p class="step-label">Step 2</p>
+              <h2>Complete your profile</h2>
+            </div>
+
+            <label class="field">
+              <span>Name</span>
+              <input id="fullName" name="fullName" type="text" autocomplete="name" required />
+            </label>
+
+            <label class="field">
+              <span>Mobile number</span>
+              <input
+                id="mobile"
+                name="mobile"
+                type="tel"
+                autocomplete="tel"
+                inputmode="tel"
+                required
+              />
+            </label>
+
+            <p class="form-error" data-error-for="profile" aria-live="polite"></p>
+
+            <div class="button-row">
+              <button class="secondary-button" type="button" data-back-to="credentials">Back</button>
+              <button class="primary-button" type="submit">Next</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="screen" id="email-sent-screen">
+          <div class="form-card message-card">
+            <div class="sent-icon" aria-hidden="true">@</div>
+            <div class="form-heading centered">
+              <p class="step-label">Step 3</p>
+              <h2>Link sent</h2>
+              <p class="muted" id="sent-message"></p>
+            </div>
+
+            <a class="primary-button as-link" id="email-link" href="#">Open email link</a>
+            <button class="secondary-button" type="button" data-back-to="profile">Edit details</button>
+          </div>
+        </div>
+
+        <div class="screen" id="confirm-screen">
+          <div class="form-card message-card">
+            <div class="sent-icon check" aria-hidden="true">OK</div>
+            <div class="form-heading centered">
+              <p class="step-label">Confirm login</p>
+              <h2>Do you want to log in to this app?</h2>
+              <p class="muted" id="confirm-email"></p>
+            </div>
+
+            <button class="primary-button" id="confirm-login" type="button">Okay</button>
+            <button class="secondary-button" id="cancel-login" type="button">Cancel</button>
+          </div>
+        </div>
+
+        <div class="screen" id="inside-screen">
+          <div class="home-view">
+            <header class="home-header">
+              <div>
+                <p class="step-label">Logged in</p>
+                <h2 id="welcome-title">Welcome</h2>
+                <div class="account-badges">
+                  <span id="current-role">User</span>
+                  <span id="current-plan">Free</span>
+                </div>
+              </div>
+              <div class="header-actions">
+                <button class="primary-button compact" id="admin-access-button" type="button">Admin access</button>
+                <button class="secondary-button compact" id="restart-flow" type="button">Start over</button>
+              </div>
+            </header>
+            <p class="admin-access-message" id="admin-access-message" aria-live="polite"></p>
+
+            <section class="profile-summary" aria-label="Profile summary">
+              <div>
+                <span>Username</span>
+                <strong id="summary-username"></strong>
+              </div>
+              <div>
+                <span>Email ID</span>
+                <strong id="summary-email"></strong>
+              </div>
+              <div>
+                <span>Mobile number</span>
+                <strong id="summary-mobile"></strong>
+              </div>
+              <div>
+                <span>Subscription</span>
+                <strong id="summary-plan"></strong>
+              </div>
+            </section>
+
+            <nav class="app-tabs" aria-label="App sections">
+              <button class="app-tab is-active" type="button" data-app-tab="learn">Learn</button>
+              <button class="app-tab" type="button" data-app-tab="languages">Languages</button>
+              <button class="app-tab" type="button" data-app-tab="create">Create</button>
+              <button class="app-tab" type="button" data-app-tab="assistant">Assistant</button>
+              <button class="app-tab" type="button" data-app-tab="pro">Pro</button>
+              <button class="app-tab" type="button" data-app-tab="share">Share</button>
+              <button class="app-tab" type="button" data-app-tab="chat">Chat</button>
+              <button class="app-tab" type="button" data-app-tab="admin">Admin / Pre-admin</button>
+            </nav>
+
+            <section
+              class="workspace-panel learn-panel app-panel is-active"
+              data-app-panel="learn"
+              aria-labelledby="learn-title"
+            >
+              <div class="section-heading">
+                <p class="step-label">Learn</p>
+                <h3 id="learn-title">How to create a web application</h3>
+              </div>
+
+              <div class="lesson-tabs" aria-label="Learning topics">
+                <button class="lesson-tab is-active" type="button" data-lesson="basics">Basics</button>
+                <button class="lesson-tab" type="button" data-lesson="domain">Domain</button>
+                <button class="lesson-tab" type="button" data-lesson="dns">DNS</button>
+                <button class="lesson-tab" type="button" data-lesson="hosting">Hosting</button>
+                <button class="lesson-tab" type="button" data-lesson="platforms">Hosting apps</button>
+              </div>
+
+              <article class="lesson-content">
+                <h4 id="lesson-title"></h4>
+                <p id="lesson-body"></p>
+                <ul id="lesson-points"></ul>
+              </article>
+            </section>
+
+            <section
+              class="workspace-panel language-panel app-panel"
+              data-app-panel="languages"
+              aria-labelledby="language-title"
+            >
+              <div class="section-heading">
+                <p class="step-label">Languages</p>
+                <h3 id="language-title">Select a programming language</h3>
+              </div>
+
+              <label class="field compact-field">
+                <span>Programming language</span>
+                <select id="language-select"></select>
+              </label>
+
+              <div class="language-list" id="language-list" aria-label="Programming languages"></div>
+
+              <div class="language-detail">
+                <div>
+                  <p class="step-label">Selected</p>
+                  <h4 id="language-name"></h4>
+                  <p id="language-summary"></p>
+                </div>
+                <label class="code-field">
+                  <span>Code area</span>
+                  <textarea id="language-code" spellcheck="false"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section
+              class="workspace-panel builder-panel app-panel"
+              data-app-panel="create"
+              aria-labelledby="builder-title"
+            >
+              <div class="section-heading">
+                <p class="step-label">Create</p>
+                <h3 id="builder-title">Create your own web app</h3>
+              </div>
+
+              <div class="prompt-builder">
+                <label class="code-field">
+                  <span>Describe the app you want</span>
+                  <textarea
+                    id="app-prompt"
+                    spellcheck="true"
+                    placeholder="Example: Create a simple budget tracker with income, expenses, and balance"
+                  ></textarea>
+                </label>
+                <div class="builder-actions">
+                  <button class="primary-button compact-action" id="generate-app" type="button">Generate app</button>
+                  <p class="link-output" id="generate-output" aria-live="polite"></p>
+                </div>
+              </div>
+
+              <label class="field compact-field">
+                <span>App name</span>
+                <input id="builder-name" type="text" value="My first web app" />
+              </label>
+
+              <div class="editor-grid">
+                <label class="code-field">
+                  <span>HTML</span>
+                  <textarea id="html-code" spellcheck="false"></textarea>
+                </label>
+                <label class="code-field">
+                  <span>CSS</span>
+                  <textarea id="css-code" spellcheck="false"></textarea>
+                </label>
+                <label class="code-field">
+                  <span>JavaScript</span>
+                  <textarea id="js-code" spellcheck="false"></textarea>
+                </label>
+              </div>
+
+              <div class="builder-actions">
+                <button class="primary-button compact-action" id="run-preview" type="button">Run app</button>
+                <button class="secondary-button compact-action" id="reset-preview" type="button">Reset code</button>
+              </div>
+
+              <iframe id="app-preview" title="App preview" sandbox="allow-scripts"></iframe>
+            </section>
+
+            <section class="assistant-panel app-panel" data-app-panel="assistant" aria-label="AI assistant">
+              <div class="assistant-heading">
+                <div>
+                  <p class="step-label">Assistant</p>
+                  <h3>AI Assistant</h3>
+                </div>
+                <div class="assistant-dot" aria-hidden="true"></div>
+              </div>
+
+              <div class="assistant-messages" id="assistant-messages" aria-live="polite">
+                <div class="chat-message assistant-message">
+                  <p>Hi, I am ready. Ask me anything and I will give the clearest answer I can.</p>
+                </div>
+              </div>
+
+              <form class="assistant-form" id="assistant-form">
+                <label class="sr-only" for="assistant-question">Question</label>
+                <input
+                  id="assistant-question"
+                  name="assistantQuestion"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="Type your question"
+                  required
+                />
+                <button class="primary-button send-button" type="submit">Ask</button>
+              </form>
+            </section>
+
+            <section class="workspace-panel app-panel pro-panel" data-app-panel="pro" aria-labelledby="pro-title">
+              <div class="section-heading">
+                <p class="step-label">Pro plan</p>
+                <h3 id="pro-title">$25 Pro plan</h3>
+              </div>
+
+              <div class="plan-card">
+                <div>
+                  <p class="plan-price">$25</p>
+                  <h4>Make all work faster</h4>
+                  <p class="muted">Pro unlocks faster workspace actions, voice mode, and premium creation tools in this app demo.</p>
+                </div>
+                <ul>
+                  <li>Faster app workspace mode</li>
+                  <li>Voice mode unlock</li>
+                  <li>Priority builder tools</li>
+                  <li>Admin can grant free Pro</li>
+                </ul>
+              </div>
+
+              <div class="status-card">
+                <span>Current status</span>
+                <strong id="pro-status">Free plan</strong>
+              </div>
+
+              <div class="builder-actions">
+                <button class="primary-button compact-action" id="activate-pro" type="button">Subscribe $25</button>
+                <button class="secondary-button compact-action" id="voice-mode" type="button">Voice mode</button>
+              </div>
+
+              <form class="inline-form" id="pro-link-form">
+                <label class="field compact-field">
+                  <span>Email for Pro subscription link</span>
+                  <input id="pro-link-email" type="email" autocomplete="email" required />
+                </label>
+                <button class="primary-button compact-action" type="submit">Send Pro link</button>
+              </form>
+
+              <p class="link-output" id="pro-link-output" aria-live="polite"></p>
+            </section>
+
+            <section class="workspace-panel app-panel share-panel" data-app-panel="share" aria-labelledby="share-title">
+              <div class="section-heading">
+                <p class="step-label">Share</p>
+                <h3 id="share-title">Install or send app links</h3>
+              </div>
+
+              <div class="share-grid">
+                <div class="status-card">
+                  <span>Install app</span>
+                  <strong>Optional</strong>
+                  <button class="secondary-button compact-action" id="install-app-share" type="button" data-install-app>
+                    Install app
+                  </button>
+                  <p class="muted" id="install-status">
+                    You can use the app in the browser or install it on a phone, tablet, laptop, or desktop.
+                  </p>
+                </div>
+
+                <form class="status-card share-form" id="app-link-form">
+                  <span>Send app link</span>
+                  <label class="field compact-field">
+                    <span>Email address</span>
+                    <input id="app-link-email" type="email" autocomplete="email" required />
+                  </label>
+                  <button class="primary-button compact-action" type="submit">Send app link</button>
+                  <p class="link-output" id="app-link-output" aria-live="polite"></p>
+                </form>
+              </div>
+            </section>
+
+            <section class="workspace-panel app-panel chat-panel" data-app-panel="chat" aria-labelledby="chat-title">
+              <div class="section-heading">
+                <p class="step-label">Chat</p>
+                <h3 id="chat-title">Talk with logged users</h3>
+              </div>
+
+              <div class="user-chat-messages" id="user-chat-messages" aria-live="polite"></div>
+
+              <form class="assistant-form" id="user-chat-form">
+                <label class="sr-only" for="user-chat-recipient">Recipient</label>
+                <select id="user-chat-recipient"></select>
+                <label class="sr-only" for="user-chat-message">Message</label>
+                <input id="user-chat-message" type="text" autocomplete="off" placeholder="Type a message" required />
+                <button class="primary-button send-button" type="submit">Send</button>
+              </form>
+            </section>
+
+            <section class="workspace-panel app-panel admin-panel" data-app-panel="admin" aria-labelledby="admin-title">
+              <div class="section-heading">
+                <p class="step-label">Admin</p>
+                <h3 id="admin-title">Admin & Pre-admin</h3>
+              </div>
+
+              <div class="status-card">
+                <span>Access</span>
+                <strong id="admin-access-status">Admin access</strong>
+                <p class="muted">
+                  Admins and pre-admins can manage users only from an approved login. The user list refreshes every
+                  second and can show users from phones, tablets, laptops, and desktops when the app is connected to a
+                  shared online database.
+                </p>
+              </div>
+
+              <form class="invite-form" id="invite-form">
+                <div class="section-heading">
+                  <p class="step-label">Invite</p>
+                  <h3>Invite people to this app</h3>
+                </div>
+                <div class="invite-grid">
+                  <label class="field compact-field">
+                    <span>Name</span>
+                    <input id="invite-name" type="text" autocomplete="name" required />
+                  </label>
+                  <label class="field compact-field">
+                    <span>Mobile number</span>
+                    <input id="invite-mobile" type="tel" autocomplete="tel" inputmode="tel" required />
+                  </label>
+                  <label class="field compact-field">
+                    <span>Email address</span>
+                    <input id="invite-email" type="email" autocomplete="email" required />
+                  </label>
+                </div>
+                <button class="primary-button compact-action" type="submit">Invite user</button>
+                <p class="link-output" id="invite-output" aria-live="polite"></p>
+              </form>
+
+              <div class="admin-table-wrap">
+                <table class="admin-table">
+                  <thead>
+                    <tr>
+                      <th>User</th>
+                      <th>Contact</th>
+                      <th>Device</th>
+                      <th>Plan</th>
+                      <th>Role</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-users"></tbody>
+                </table>
+              </div>
+
+              <form class="inline-form" id="admin-chat-form">
+                <label class="field compact-field">
+                  <span>Message user</span>
+                  <select id="admin-chat-recipient"></select>
+                </label>
+                <label class="field compact-field">
+                  <span>Message</span>
+                  <input id="admin-chat-message" type="text" autocomplete="off" required />
+                </label>
+                <button class="primary-button compact-action" type="submit">Send</button>
+              </form>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
